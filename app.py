@@ -59,6 +59,14 @@ def create_app(test_config=None):
             return redirect(url_for("results"))
 
         scenario = SCENARIOS[index]
+
+        previous_feedback = session.get("last_feedback")
+        if (
+            previous_feedback
+            and previous_feedback.get("scenario_id") == scenario["id"]
+        ):
+            return redirect(url_for("feedback"))
+
         classification = request.form.get("classification", "").strip().lower()
         selected_indicators = set(request.form.getlist("indicators"))
 

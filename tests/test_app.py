@@ -112,3 +112,18 @@ def test_url_checker_displays_detected_warnings(client):
     assert b"HTTP rather than HTTPS" in response.data
     assert b"account or security-related wording" in response.data
     assert b"High caution level" in response.data
+
+def test_submitting_same_scenario_twice_does_not_award_points_twice(client):
+    start_training(client)
+
+    answer = {
+        "classification": "phishing",
+        "indicators": ["urgent", "credential", "domain"],
+    }
+
+    client.post("/submit", data=answer)
+    client.post("/submit", data=answer)
+
+    with client.session_transaction() as session:
+        assert session["score"] == 5
+        assert session["answered"] == 1
