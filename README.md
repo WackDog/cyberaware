@@ -1,63 +1,67 @@
 # CyberAware
 
-CyberAware is a small Flask prototype for interactive cybersecurity-awareness training. Users classify simulated messages, identify suspicious indicators, receive immediate explanations, and see session progress.
+CyberAware is a small Flask-based cybersecurity awareness prototype. It lets users practise identifying phishing messages, select suspicious indicators, receive explainable feedback, track a session score, and inspect unfamiliar URLs using transparent educational heuristics.
 
-## Current features
+## Features
 
-- Three original phishing/legitimate training scenarios
+- Phishing/legitimate message scenarios
 - Suspicious-indicator selection
-- Immediate explainable feedback
+- Immediate feedback and explanations
 - Session scoring and progress
-- Results and restart flow
-- Automated Flask tests with pytest
+- Educational URL risk checker
+- Automated tests with pytest
 
-The URL risk checker from the development plan is intentionally left for the next implementation stage.
+## URL checker
+
+The URL checker performs local string/structure analysis only. It does **not** visit the submitted website or send the URL to an external service. Current checks include:
+
+- IP-address hostnames
+- `@` symbols in the authority section
+- explicit HTTP links
+- excessive subdomains
+- Punycode hostnames
+- unusually high numbers of hyphens
+- unusually long URLs
+- account/security-related wording
+
+The result is guidance rather than a malware verdict. A low result does not prove that a website is safe, and a warning does not prove that it is malicious.
 
 ## Run locally
 
-Create and activate a virtual environment, then install the requirements:
+Create and activate a virtual environment, then install dependencies:
 
 ```bash
 python -m venv .venv
 ```
 
-Windows PowerShell:
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Git Bash:
+Git Bash on Windows:
 
 ```bash
 source .venv/Scripts/activate
-```
-
-Install dependencies:
-
-```bash
 python -m pip install -r requirements.txt
 ```
 
-Run the application:
-
-```bash
-python app.py
-```
-
-Open `http://127.0.0.1:5000` in a browser.
-
-## Run tests
+Run the tests:
 
 ```bash
 pytest -q
 ```
 
-## Suggested first commits
+Run the app:
 
-1. `Set up Flask application and scenario data`
-2. `Add phishing classification workflow`
-3. `Add indicator feedback and scoring`
-4. `Add automated tests for training flow`
+```bash
+python app.py
+```
 
-Do not create artificial/backdated commits; use these only as examples for genuine development stages.
+Then open `http://127.0.0.1:5000`.
+
+## Project structure
+
+```text
+app.py                 Flask routes and session logic
+scenarios.py           Original training scenarios
+url_checker.py         URL-analysis rules
+static/style.css       Styling
+templates/             Jinja templates
+tests/                 pytest tests
+```

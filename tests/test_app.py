@@ -88,3 +88,27 @@ def test_restart_resets_progress(client):
     response = client.post("/restart", follow_redirects=True)
     assert b"Scenario 1 of 3" in response.data
     assert b"Score 0" in response.data
+
+
+def test_url_checker_page_loads(client):
+    response = client.get("/url-checker")
+    assert response.status_code == 200
+    assert b"Check an unfamiliar URL" in response.data
+
+
+def test_url_checker_rejects_empty_input(client):
+    response = client.post("/url-checker", data={"url": ""})
+    assert response.status_code == 200
+    assert b"Enter a URL to analyse" in response.data
+
+
+def test_url_checker_displays_detected_warnings(client):
+    response = client.post(
+        "/url-checker",
+        data={"url": "http://203.0.113.42/login"},
+    )
+    assert response.status_code == 200
+    assert b"IP address used as the hostname" in response.data
+    assert b"HTTP rather than HTTPS" in response.data
+    assert b"account or security-related wording" in response.data
+    assert b"High caution level" in response.data

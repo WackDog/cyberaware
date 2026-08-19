@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session
 
 from scenarios import SCENARIOS
+from url_checker import analyse_url
 
 
 def create_app(test_config=None):
@@ -161,6 +162,26 @@ def create_app(test_config=None):
     def restart():
         reset_training()
         return redirect(url_for("training"))
+
+    @app.route("/url-checker", methods=["GET", "POST"])
+    def url_checker():
+        result = None
+        error = None
+        entered_url = ""
+
+        if request.method == "POST":
+            entered_url = request.form.get("url", "")
+            try:
+                result = analyse_url(entered_url)
+            except ValueError as exc:
+                error = str(exc)
+
+        return render_template(
+            "url_checker.html",
+            result=result,
+            error=error,
+            entered_url=entered_url,
+        )
 
     return app
 

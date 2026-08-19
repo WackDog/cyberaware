@@ -93,3 +93,46 @@ legend { font-weight: 800; font-size: 1.05rem; margin-bottom: .3rem; }
     .site-header, .training-heading, .action-row { align-items: flex-start; flex-direction: column; }
     .tagline { display: none; }
 }
+
+.site-nav { display: flex; align-items: center; gap: 1rem; }
+.site-nav a { color: #dbeafe; text-decoration: none; font-weight: 700; }
+.site-nav a:hover { color: white; }
+.text-link { color: #3347d7; font-weight: 800; text-decoration: none; }
+.text-link:hover { text-decoration: underline; }
+
+.url-checker-card h1 { margin-top: .2rem; }
+.url-form { margin-top: 1.5rem; display: grid; gap: .55rem; }
+.url-input-row { display: grid; grid-template-columns: 1fr auto; gap: .75rem; }
+.url-input-row input {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: .85rem 1rem;
+    font: inherit;
+    color: #172033;
+    background: white;
+}
+.url-input-row input:focus { outline: 3px solid #c7d2fe; border-color: #6373e8; }
+.risk-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.risk-heading h2 { margin: .2rem 0 0; }
+.risk-badge { border-radius: 999px; padding: .55rem .8rem; font-weight: 800; white-space: nowrap; }
+.risk-low { background: #dcfce7; color: #166534; }
+.risk-medium { background: #fef3c7; color: #92400e; }
+.risk-high { background: #fee2e2; color: #991b1b; }
+.url-meta { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin: 1.25rem 0; }
+.url-meta div { background: #f8fafc; border-radius: 12px; padding: .9rem; min-width: 0; }
+.url-meta dt { color: #64748b; font-size: .82rem; font-weight: 700; }
+.url-meta dd { margin: .2rem 0 0; overflow-wrap: anywhere; font-weight: 700; }
+.warning-stack { display: grid; gap: .75rem; }
+.warning-item { border: 1px solid #fed7aa; background: #fff7ed; border-radius: 12px; padding: 1rem; }
+.warning-item p { margin-bottom: 0; color: #7c2d12; }
+.warning-title-row { display: flex; justify-content: space-between; gap: 1rem; color: #9a3412; }
+.alert.low-risk { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: .9rem; border-radius: 10px; }
+.guidance-box { margin-top: 1.25rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; }
+.guidance-box h3 { margin-top: 0; }
+.guidance-box ul { margin-bottom: 0; }
+
+@media (max-width: 700px) {
+    .site-nav, .risk-heading { align-items: flex-start; flex-direction: column; }
+    .url-input-row, .url-meta { grid-template-columns: 1fr; }
+}

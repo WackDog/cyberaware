@@ -9,7 +9,10 @@
 <body>
     <header class="site-header">
         <a class="brand" href="{{ url_for('index') }}">CyberAware</a>
-        <span class="tagline">Practise safer cybersecurity decisions</span>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="{{ url_for('index') }}">Training</a>
+            <a href="{{ url_for('url_checker') }}">URL checker</a>
+        </nav>
     </header>
 
     <main class="page-shell">
