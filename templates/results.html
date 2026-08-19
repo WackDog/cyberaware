@@ -4,23 +4,34 @@
 <section class="card result-card">
     <p class="eyebrow">Training complete</p>
     <h1>Your session results</h1>
+    <p class="lead">The aim is not only to get the answer right, but to understand the evidence behind each decision.</p>
+
     <div class="result-grid">
-        <div><strong>{{ score }}</strong><span>points</span></div>
-        <div><strong>{{ score_percent }}%</strong><span>score</span></div>
+        <div><strong>{{ score }}</strong><span>points earned</span></div>
+        <div><strong>{{ score_percent }}%</strong><span>overall score</span></div>
         <div><strong>{{ accuracy }}%</strong><span>classification accuracy</span></div>
         <div><strong>{{ answered }}</strong><span>scenarios completed</span></div>
     </div>
 
     {% if accuracy == 100 %}
-        <p class="lead">Excellent classification accuracy. Keep checking the evidence behind each decision.</p>
+        <div class="result-message success-message">
+            <strong>Strong result.</strong> You classified every message correctly. Keep checking the evidence rather than relying on familiarity alone.
+        </div>
     {% elif accuracy >= 67 %}
-        <p class="lead">Good progress. Review the warning signs you missed and try another session.</p>
+        <div class="result-message medium-message">
+            <strong>Good progress.</strong> Review the indicators that were missed and try another session to reinforce the weaker areas.
+        </div>
     {% else %}
-        <p class="lead">Use the explanations from each scenario to guide another attempt.</p>
+        <div class="result-message warning-message">
+            <strong>More practice will help.</strong> Use the explanations from each scenario and focus on sender domains, pressure and requests for sensitive information.
+        </div>
     {% endif %}
 
-    <form method="post" action="{{ url_for('restart') }}">
-        <button class="button primary" type="submit">Try again</button>
-    </form>
+    <div class="hero-actions">
+        <form method="post" action="{{ url_for('restart') }}">
+            <button class="button primary" type="submit">Try training again</button>
+        </form>
+        <a class="button secondary" href="{{ url_for('url_checker') }}">Practise with the URL checker</a>
+    </div>
 </section>
 {% endblock %}

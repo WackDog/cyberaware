@@ -1,6 +1,7 @@
 import pytest
 
 from app import create_app
+from scenarios import SCENARIOS
 
 
 @pytest.fixture()
@@ -22,7 +23,7 @@ def test_home_page_loads(client):
 def test_start_training_loads_first_scenario(client):
     response = start_training(client)
     assert response.status_code == 200
-    assert b"Scenario 1 of 3" in response.data
+    assert f"Scenario 1 of {len(SCENARIOS)}".encode() in response.data
     assert b"mailbox will be disabled" in response.data
 
 
@@ -55,23 +56,20 @@ def test_correct_answer_awards_points_and_shows_feedback(client):
 def test_complete_training_reaches_results(client):
     start_training(client)
 
-    answers = [
-        ("phishing", ["urgent", "credential", "domain"]),
-        ("legitimate", []),
-        ("phishing", ["payment", "ip-host", "pressure"]),
-    ]
-
-    for classification, indicators in answers:
+    for scenario in SCENARIOS:
         client.post(
             "/submit",
-            data={"classification": classification, "indicators": indicators},
+            data={
+                "classification": scenario["classification"],
+                "indicators": scenario["indicator_ids"],
+            },
         )
         response = client.post("/next", follow_redirects=True)
 
     assert response.status_code == 200
     assert b"Training complete" in response.data
     assert b"100%" in response.data
-    assert b"3" in response.data
+    assert str(len(SCENARIOS)).encode() in response.data
 
 
 def test_restart_resets_progress(client):
@@ -86,8 +84,24 @@ def test_restart_resets_progress(client):
     client.post("/next")
 
     response = client.post("/restart", follow_redirects=True)
-    assert b"Scenario 1 of 3" in response.data
+    assert f"Scenario 1 of {len(SCENARIOS)}".encode() in response.data
     assert b"Score 0" in response.data
+
+
+def test_submitting_same_scenario_twice_does_not_award_points_twice(client):
+    start_training(client)
+
+    answer = {
+        "classification": "phishing",
+        "indicators": ["urgent", "credential", "domain"],
+    }
+
+    client.post("/submit", data=answer)
+    client.post("/submit", data=answer)
+
+    with client.session_transaction() as session:
+        assert session["score"] == 5
+        assert session["answered"] == 1
 
 
 def test_url_checker_page_loads(client):
@@ -112,18 +126,3 @@ def test_url_checker_displays_detected_warnings(client):
     assert b"HTTP rather than HTTPS" in response.data
     assert b"account or security-related wording" in response.data
     assert b"High caution level" in response.data
-
-def test_submitting_same_scenario_twice_does_not_award_points_twice(client):
-    start_training(client)
-
-    answer = {
-        "classification": "phishing",
-        "indicators": ["urgent", "credential", "domain"],
-    }
-
-    client.post("/submit", data=answer)
-    client.post("/submit", data=answer)
-
-    with client.session_transaction() as session:
-        assert session["score"] == 5
-        assert session["answered"] == 1

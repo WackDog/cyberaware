@@ -2,34 +2,50 @@
 {% block title %}CyberAware | Home{% endblock %}
 {% block content %}
 <section class="hero card">
-    <p class="eyebrow">Cybersecurity awareness training</p>
-    <h1>Learn to spot the warning signs before you click.</h1>
-    <p class="lead">
-        Work through short message scenarios, identify suspicious indicators and receive immediate explanations
-        about safer cybersecurity decisions.
-    </p>
-    <form method="post" action="{{ url_for('start') }}">
-        <button class="button primary" type="submit">Start training</button>
-    </form>
+    <div class="hero-copy">
+        <p class="eyebrow">Cybersecurity awareness training</p>
+        <h1>Learn to spot the warning signs before you click.</h1>
+        <p class="lead">
+            Practise realistic decisions, identify the evidence behind them and get immediate explanations that help turn cybersecurity guidance into everyday habits.
+        </p>
+        <div class="hero-actions">
+            <form method="post" action="{{ url_for('start') }}">
+                <button class="button primary" type="submit">Start 6-scenario training</button>
+            </form>
+            <a class="button secondary" href="{{ url_for('url_checker') }}">Check a URL</a>
+        </div>
+    </div>
+    <aside class="hero-note" aria-label="Training information">
+        <strong>Safe practice environment</strong>
+        <p>All messages are fictional training examples. Links shown inside scenarios are plain text and are not opened by CyberAware.</p>
+    </aside>
+</section>
+
+<section class="section-heading">
+    <p class="eyebrow">How it works</p>
+    <h2>Practise, explain, improve</h2>
 </section>
 
 <section class="feature-grid">
-    <article class="card">
-        <h2>Practise decisions</h2>
+    <article class="card feature-card">
+        <span class="feature-number">01</span>
+        <h3>Make a decision</h3>
         <p>Classify realistic training messages as phishing or legitimate.</p>
     </article>
-    <article class="card">
-        <h2>Identify evidence</h2>
-        <p>Select the warning signs that influenced your decision.</p>
+    <article class="card feature-card">
+        <span class="feature-number">02</span>
+        <h3>Identify the evidence</h3>
+        <p>Select the warning signs that influenced your decision rather than relying on a guess.</p>
     </article>
-    <article class="card">
-        <h2>Understand why</h2>
-        <p>Receive immediate feedback instead of only being told right or wrong.</p>
+    <article class="card feature-card">
+        <span class="feature-number">03</span>
+        <h3>Understand why</h3>
+        <p>Receive immediate, explainable feedback and see which indicators you missed.</p>
     </article>
-    <article class="card">
-        <h2>Check unfamiliar links</h2>
-        <p>Use transparent rules to inspect a URL for warning signs before deciding what to do next.</p>
-        <a class="text-link" href="{{ url_for('url_checker') }}">Open URL checker →</a>
+    <article class="card feature-card">
+        <span class="feature-number">04</span>
+        <h3>Inspect unfamiliar links</h3>
+        <p>Use transparent local rules to highlight URL characteristics that deserve extra scrutiny.</p>
     </article>
 </section>
 {% endblock %}

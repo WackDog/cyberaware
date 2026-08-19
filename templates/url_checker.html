@@ -5,11 +5,12 @@
     <p class="eyebrow">Educational URL analysis</p>
     <h1>Check an unfamiliar URL for warning signs</h1>
     <p class="lead">
-        CyberAware looks for transparent risk indicators and explains each one. It does not prove that a website is safe or malicious.
+        CyberAware analyses the text and structure of a URL using transparent rules. It never opens the destination and does not send the URL to a third-party service.
     </p>
 
     <form class="url-form" method="post" action="{{ url_for('url_checker') }}">
         <label for="url"><strong>URL to analyse</strong></label>
+        <p class="hint" id="url-help">Paste a URL or type a hostname such as example.com/login.</p>
         <div class="url-input-row">
             <input
                 id="url"
@@ -18,6 +19,7 @@
                 value="{{ entered_url }}"
                 placeholder="https://example.com/login"
                 autocomplete="off"
+                aria-describedby="url-help"
                 required
             >
             <button class="button primary" type="submit">Analyse URL</button>
@@ -25,7 +27,7 @@
     </form>
 
     {% if error %}
-        <div class="alert error">{{ error }}</div>
+        <div class="alert error" role="alert">{{ error }}</div>
     {% endif %}
 </section>
 
@@ -46,6 +48,7 @@
 
     {% if result.warnings %}
         <h3>Warning signs detected</h3>
+        <p class="hint">These indicators increase caution; none of them proves that the destination is malicious.</p>
         <div class="warning-stack">
             {% for warning in result.warnings %}
                 <article class="warning-item">
@@ -68,6 +71,7 @@
         <ul>
             <li>Check the hostname carefully before entering credentials or payment information.</li>
             <li>If a message sent you the link, consider opening the organisation's known website manually instead.</li>
+            <li>Use another trusted source to verify unexpected requests.</li>
             <li>Do not treat a low result as proof that a website is trustworthy.</li>
         </ul>
     </div>

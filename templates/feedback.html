@@ -6,22 +6,27 @@
     {% if feedback.classification_correct %}
         <h1>Correct classification</h1>
     {% else %}
-        <h1>Not quite</h1>
+        <h1>Not quite — review the evidence</h1>
     {% endif %}
     <p>
         You chose <strong>{{ feedback.chosen_classification|capitalize }}</strong>.
         The expected answer was <strong>{{ feedback.expected_classification|capitalize }}</strong>.
     </p>
-    <p class="points">+{{ feedback.score_gained }} / {{ feedback.max_for_scenario }} points this scenario</p>
+    <div class="feedback-meta">
+        <span class="points">+{{ feedback.score_gained }} / {{ feedback.max_for_scenario }} points</span>
+        <span class="score-chip">Current score {{ score }}</span>
+    </div>
 </section>
 
 <section class="card">
+    <p class="eyebrow">Decision explanation</p>
     <h2>Why?</h2>
-    <p>{{ scenario.explanation }}</p>
+    <p class="lead compact-lead">{{ scenario.explanation }}</p>
 </section>
 
 <section class="card">
-    <h2>Indicator review</h2>
+    <p class="eyebrow">Indicator review</p>
+    <h2>What did you notice?</h2>
 
     {% if scenario.indicator_ids %}
         {% if feedback.correctly_selected %}
@@ -42,7 +47,9 @@
         </ul>
         {% endif %}
     {% else %}
-        <p>This scenario was designed as a legitimate example, so none of the listed warning signs were required.</p>
+        <div class="alert low-risk">
+            This scenario was designed as a legitimate example, so none of the listed warning signs were required.
+        </div>
     {% endif %}
 
     {% if feedback.incorrectly_selected %}
@@ -56,7 +63,7 @@
 </section>
 
 <div class="action-row">
-    <div class="score-chip">Current score {{ score }}</div>
+    <p class="hint">Use the explanation above when judging the next scenario.</p>
     <form method="post" action="{{ url_for('next_scenario') }}">
         <button class="button primary" type="submit">Next scenario</button>
     </form>

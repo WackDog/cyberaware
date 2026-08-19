@@ -3,20 +3,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="CyberAware interactive cybersecurity awareness training">
     <title>{% block title %}CyberAware{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header class="site-header">
-        <a class="brand" href="{{ url_for('index') }}">CyberAware</a>
+        <a class="brand" href="{{ url_for('index') }}" aria-label="CyberAware home">CyberAware</a>
         <nav class="site-nav" aria-label="Main navigation">
-            <a href="{{ url_for('index') }}">Training</a>
-            <a href="{{ url_for('url_checker') }}">URL checker</a>
+            <a href="{{ url_for('index') }}" {% if request.endpoint in ['index', 'training', 'feedback', 'results'] %}aria-current="page"{% endif %}>Training</a>
+            <a href="{{ url_for('url_checker') }}" {% if request.endpoint == 'url_checker' %}aria-current="page"{% endif %}>URL checker</a>
         </nav>
     </header>
 
     <main class="page-shell">
         {% block content %}{% endblock %}
     </main>
+
+    <footer class="site-footer">
+        <p>CyberAware is an educational prototype. It does not replace professional security advice or threat-intelligence services.</p>
+    </footer>
 </body>
 </html>
