@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}CyberAware | Home{% endblock %}
+{% block content %}
+<section class="hero card">
+    <p class="eyebrow">Cybersecurity awareness training</p>
+    <h1>Learn to spot the warning signs before you click.</h1>
+    <p class="lead">
+        Work through short message scenarios, identify suspicious indicators and receive immediate explanations
+        about safer cybersecurity decisions.
+    </p>
+    <form method="post" action="{{ url_for('start') }}">
+        <button class="button primary" type="submit">Start training</button>
+    </form>
+</section>
+
+<section class="feature-grid">
+    <article class="card">
+        <h2>Practise decisions</h2>
+        <p>Classify realistic training messages as phishing or legitimate.</p>
+    </article>
+    <article class="card">
+        <h2>Identify evidence</h2>
+        <p>Select the warning signs that influenced your decision.</p>
+    </article>
+    <article class="card">
+        <h2>Understand why</h2>
+        <p>Receive immediate feedback instead of only being told right or wrong.</p>
+    </article>
+</section>
+{% endblock %}

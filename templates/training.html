@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}CyberAware | Training{% endblock %}
+{% block content %}
+<div class="training-heading">
+    <div>
+        <p class="eyebrow">Scenario {{ current }} of {{ total }}</p>
+        <h1>Would you trust this message?</h1>
+    </div>
+    <div class="score-chip">Score {{ score }}</div>
+</div>
+
+{% if error %}
+<div class="alert error">{{ error }}</div>
+{% endif %}
+
+<article class="email-card">
+    <div class="email-row"><strong>From</strong><span>{{ scenario.sender }}</span></div>
+    <div class="email-row"><strong>Subject</strong><span>{{ scenario.subject }}</span></div>
+    <div class="email-body">{{ scenario.body }}</div>
+</article>
+
+<form method="post" action="{{ url_for('submit_answer') }}" class="card training-form">
+    <fieldset>
+        <legend>1. Which indicators look suspicious?</legend>
+        <p class="hint">Select any that influenced your decision. It is fine to select none.</p>
+        <div class="check-list">
+            {% for indicator in scenario.indicators %}
+            <label class="check-option">
+                <input type="checkbox" name="indicators" value="{{ indicator.id }}">
+                <span>{{ indicator.label }}</span>
+            </label>
+            {% endfor %}
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>2. Classify the message</legend>
+        <div class="classification-grid">
+            <label class="classification-option">
+                <input type="radio" name="classification" value="phishing">
+                <span>Phishing</span>
+            </label>
+            <label class="classification-option">
+                <input type="radio" name="classification" value="legitimate">
+                <span>Legitimate</span>
+            </label>
+        </div>
+    </fieldset>
+
+    <button class="button primary" type="submit">Submit decision</button>
+</form>
+{% endblock %}

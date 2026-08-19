@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}CyberAware | Results{% endblock %}
+{% block content %}
+<section class="card result-card">
+    <p class="eyebrow">Training complete</p>
+    <h1>Your session results</h1>
+    <div class="result-grid">
+        <div><strong>{{ score }}</strong><span>points</span></div>
+        <div><strong>{{ score_percent }}%</strong><span>score</span></div>
+        <div><strong>{{ accuracy }}%</strong><span>classification accuracy</span></div>
+        <div><strong>{{ answered }}</strong><span>scenarios completed</span></div>
+    </div>
+
+    {% if accuracy == 100 %}
+        <p class="lead">Excellent classification accuracy. Keep checking the evidence behind each decision.</p>
+    {% elif accuracy >= 67 %}
+        <p class="lead">Good progress. Review the warning signs you missed and try another session.</p>
+    {% else %}
+        <p class="lead">Use the explanations from each scenario to guide another attempt.</p>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('restart') }}">
+        <button class="button primary" type="submit">Try again</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}CyberAware | Feedback{% endblock %}
+{% block content %}
+<section class="card feedback-summary {% if feedback.classification_correct %}success-card{% else %}warning-card{% endif %}">
+    <p class="eyebrow">Immediate feedback</p>
+    {% if feedback.classification_correct %}
+        <h1>Correct classification</h1>
+    {% else %}
+        <h1>Not quite</h1>
+    {% endif %}
+    <p>
+        You chose <strong>{{ feedback.chosen_classification|capitalize }}</strong>.
+        The expected answer was <strong>{{ feedback.expected_classification|capitalize }}</strong>.
+    </p>
+    <p class="points">+{{ feedback.score_gained }} / {{ feedback.max_for_scenario }} points this scenario</p>
+</section>
+
+<section class="card">
+    <h2>Why?</h2>
+    <p>{{ scenario.explanation }}</p>
+</section>
+
+<section class="card">
+    <h2>Indicator review</h2>
+
+    {% if scenario.indicator_ids %}
+        {% if feedback.correctly_selected %}
+        <h3>Correctly identified</h3>
+        <ul class="feedback-list good">
+            {% for indicator_id in feedback.correctly_selected %}
+            <li><strong>{{ indicator_lookup[indicator_id].label }}</strong><br>{{ indicator_lookup[indicator_id].explanation }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if feedback.missed_indicators %}
+        <h3>Missed warning signs</h3>
+        <ul class="feedback-list warning">
+            {% for indicator_id in feedback.missed_indicators %}
+            <li><strong>{{ indicator_lookup[indicator_id].label }}</strong><br>{{ indicator_lookup[indicator_id].explanation }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% else %}
+        <p>This scenario was designed as a legitimate example, so none of the listed warning signs were required.</p>
+    {% endif %}
+
+    {% if feedback.incorrectly_selected %}
+    <h3>Selected, but not a warning sign here</h3>
+    <ul class="feedback-list neutral">
+        {% for indicator_id in feedback.incorrectly_selected %}
+        <li><strong>{{ indicator_lookup[indicator_id].label }}</strong><br>{{ indicator_lookup[indicator_id].explanation }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</section>
+
+<div class="action-row">
+    <div class="score-chip">Current score {{ score }}</div>
+    <form method="post" action="{{ url_for('next_scenario') }}">
+        <button class="button primary" type="submit">Next scenario</button>
+    </form>
+</div>
+{% endblock %}
